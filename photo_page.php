@@ -1,4 +1,6 @@
 <?php
+    require_once 'validation/redirect.php';
+    redirectIfUserNotLogged();
     require_once 'models/Photo.php';
     $photo_id=$_GET["photo_id"];
     $photo_obj=new Photo();

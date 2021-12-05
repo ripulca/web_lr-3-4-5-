@@ -26,6 +26,6 @@ class Photo extends DB
         ");
         $proc->bindValue(1, $id, PDO::PARAM_INT);
         $proc->execute();
-        return $proc->fetch(PDO::FETCH_ASSOC);;
+        return $proc->fetch(PDO::FETCH_ASSOC);
     }
 }

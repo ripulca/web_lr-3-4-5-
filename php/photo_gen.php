@@ -6,7 +6,7 @@
     }
     $page_num = (int)$_GET['page'];
     $photos_per_page = 9;
-    $offset = $page_num * $photos_per_page;
+    $offset = (int)($page_num * $photos_per_page);
 
     $photo_obj = new Photo();
     $photos = $photo_obj->getPhotosWithOffset($offset);

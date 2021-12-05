@@ -1,86 +1,81 @@
 <?php
 
-require_once "db.php";
+require_once "PDO.php";
 
 class User extends DB
 {
     public function getUserById($id)
     {
-        $sth = $this->dbh->prepare("
-            SELECT * FROM User
-            WHERE user_id=:user_id
-        ");
+        $proc = $this->pdo->prepare("SELECT * 
+                                    FROM client
+                                    WHERE client_id=?; ");
 
-        $sth->bindValue(":user_id", $id, PDO::PARAM_INT);
-
-        $sth->execute();
-
-        return $sth->fetch();
+        $proc->bindValue(1, $id, PDO::PARAM_INT);
+        $proc->execute();
+        return $proc->fetch(PDO::FETCH_ASSOC);
     }
 
     public function getUserByEmail($email)
     {
-        $sth = $this->dbh->prepare("
-        SELECT * FROM User
-        WHERE email=:email
-        ");
+        $proc = $this->pdo->prepare("SELECT * 
+                                    FROM client
+                                    WHERE client_email=:email; ");
+        $proc->execute(array(":email" => $email));
 
-        $sth->execute(array(":email" => $email));
-
-        return $sth->fetch();
+        return $proc->fetch();
     }
 
-    public function getUserIfPasswordVerify($email, $password)
+    public function getUserIfPasswordVerify($login, $password)
     {
-        $user = $this->getUserByEmail($email);
+        $id = $this->getUserIdByLogin($login);
+        $user = $this->getUserById($id);
         if ($user) {
-            if (password_verify($password, $user['password_hash'])) {
+            if (password_verify($password, $user['client_pwd'])) {
                 return $user;
             }
         }
-
         return false;
     }
 
-    public function getUserIdByEmail($email)
+    public function getUserIdByLogin($login)
     {
-        $sth = $this->dbh->prepare("
-        SELECT user_id FROM User
-        WHERE email=:email
-        ");
+        $proc = $this->pdo->prepare("SELECT client_id 
+                                    FROM client
+                                    WHERE client_login=:client_login; ");
+        $proc->execute(array(":client_login" => $login));
 
-        $sth->execute(array(":email" => $email));
-
-        return $sth->fetch()[0];
+        return $proc->fetch()[0];
     }
 
     public function isEmailFree($email)
     {
-        $sth = $this->dbh->prepare("SELECT COUNT(*) FROM User WHERE email=:email");
-        $sth->execute(array(":email" => $email));
-
-        $count = (int) $sth->fetch()[0];
-
+        $proc = $this->pdo->prepare("SELECT COUNT(*) 
+                                    FROM client 
+                                    WHERE client_email=:email; ");
+        $proc->execute(array(":email" => $email));
+        $count = (int) $proc->fetch()[0];
         return $count === 0;
     }
 
     public function save($name, $email, $phone, $password)
     {
         try {
-            $sth = $this->dbh->prepare("
-            INSERT INTO User (name, email, phone, password_hash) VALUES
-                (:name, :email, :phone, :password_hash)
-            ");
+            $proc = $this->pdo->prepare("INSERT INTO client (client_login, client_pwd, client_email, client_phone) 
+            VALUES (:client_login, :password_hash, :email, :phone); ");
 
             $save_name = htmlspecialchars($name);
             $save_email = htmlspecialchars($email);
             $save_phone = htmlspecialchars($phone);
-
             $password_hash = password_hash($password, PASSWORD_DEFAULT);
 
-            $sth->execute(array(":name" => $save_name, ":email" => $save_email, ":phone" => $save_phone, ":password_hash" => $password_hash));
+            $proc->bindValue(":client_login" , $save_name);
+            $proc->bindValue(":password_hash" , $password_hash);
+            $proc->bindValue(":email" , $save_email);
+            $proc->bindValue(":phone" , $save_phone);
+            
+            $proc->execute();
         } catch (PDOException $e) {
-            error_log($e->getMessage());
+            echo "Ошибка сохранения: " . $e->getMessage();
             return false;
         }
         return true;

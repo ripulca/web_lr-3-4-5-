@@ -1,6 +1,3 @@
-<?php
-
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,7 +28,7 @@
                     </div>
                 </div>
                 <div class="main_photos_container">
-                    <?php require 'resources/php/first_view_photos.php'; ?>
+                    <?php require 'php/first_view_photos.php'; ?>
                 </div>
                 <div class="main_btn_container">
                     <button class="add_content_btn">
@@ -45,6 +42,5 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="resources/js/buttons.js"></script>
     <script src="resources/js/modal_win_buttons.js"></script>
-    <script src="resources/js/validation.js"></script>
     </body>
 </html>
