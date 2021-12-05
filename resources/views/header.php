@@ -1,3 +1,7 @@
+<?php
+    require_once "validation/redirect.php";
+    $user = getUserIfUserLogged();
+?>
 <header class="header">
     <nav class="header_nav">
         <a class="header_nav_title" href="http://web-lgtu-3"><h1>PH</h1></a>
@@ -9,14 +13,11 @@
             </button>
             <input type="search" placeholder="Search photos" class="header_nav_search_inpt">
         </form>
-        <div class="header_nav_menu">
-            <div>
-                <div>Authors</div>
-            </div>
-            <div>
-                <div>Genres</div>
-            </div>
-        </div>
-        <button class="header_nav_auth_btn neomorf_flat">Sign in/Sign up</button>
+        <?php if ($user): ?>
+            <div class="hello">Привет, <?= $user['client_login'] ?></div>
+            <a class="exit" href=<?= "/exit.php"?>>Exit</a>
+        <?php else: ?>
+            <button class="header_nav_auth_btn neomorf_flat">Sign in/Sign up</button>
+        <?php endif; ?>
     </nav>
 </header>

@@ -5,6 +5,9 @@ $('.sign_in').click(function () {
     if($('.registration').hasClass('open')){ 
         $('.registration').removeClass(' open');
     }
+    if($('.msg-reg').hasClass('open')){
+        $('.msg-reg').removeClass('open');
+    }
 })
 
 $('.sign_up').click(function () {
@@ -13,6 +16,9 @@ $('.sign_up').click(function () {
     }        
     if($('.enter').hasClass('open')){ 
         $('.enter').removeClass(' open');
+    }
+    if($('.msg-enter').hasClass('open')){
+        $('.msg-enter').removeClass('open');
     }
 })
 
@@ -24,9 +30,15 @@ $('.close').click(function () {
     if($('.registration').hasClass('open')){ 
         $('.registration').removeClass(' open');
     }
+    if($('.msg-reg').hasClass('open')){
+        $('.msg-reg').removeClass('open');
+    }
+    if($('.msg-enter').hasClass('open')){
+        $('.msg-enter').removeClass('open');
+    }
   });
 
-  function pwd_validation(pwd){
+  function pwd_validation(pwd, form){
     let amount_Nan=0;
     const pwd_len = pwd.length;
     for(var i=0; i<pwd_len; i++){
@@ -38,7 +50,7 @@ $('.close').click(function () {
     if(pwd_len>num_amount){
         return true;
     }
-    alert('Password can not be without letters');
+    $(form).addClass(' open').text('Password can not be without letters');
     // pwd.focus();
     return false;
 }
@@ -47,22 +59,21 @@ function password_repeat_validation(pwd, pwd_repeat) {
     if(pwd==pwd_repeat){
         return true;
     }
-    alert('Passwords are not equal!');
+    $('.msg-reg').addClass(' open').text('Passwords are not equal!');
     // pwd_repeat.focus();
     return false;
 }
 
 function form_validation(){
     if($('.registration').hasClass('open')){
-        var login = document.registration.login.value;
+        // var login = document.registration.login.value;
         var pwd = document.registration.password.value;
         var pwd_repeat=document.registration.password_repeat.value;
-        var email = document.registration.email.value;
-        var phone = document.registration.phone.value;
-        if(login==="" || password==="" || email==="" || phone===""){return;}
-        if(pwd_validation(pwd)){
+        // var email = document.registration.email.value;
+        // var phone = document.registration.phone.value;
+        if(pwd_validation(pwd, '.msg-reg')){
             if(password_repeat_validation(pwd, pwd_repeat)){
-                console.log(login+' '+pwd+' '+email+' '+phone);
+                // console.log(login+' '+pwd+' '+email+' '+phone);
                 return true;
             }
         }
@@ -70,9 +81,8 @@ function form_validation(){
     if($('.enter').hasClass('open')){
         var login = document.enter.login.value;
         var pwd = document.enter.password.value;
-        if(login==="" || password===""){return;}
-        if(pwd_validation(pwd)){
-            console.log(login+' '+pwd);
+        if(pwd_validation(pwd, '.msg-enter')){
+            // console.log(login+' '+pwd);
             return true;
         }
     }
@@ -80,52 +90,63 @@ function form_validation(){
 }
 
 $('.submit').click(function(e){
-    if(!form_validation()){return;}
-    e.preventDefault();
-    if($('.registration').hasClass('open')){
-        var login = document.registration.login.value;
-        var password = document.registration.password.value;
-        var email = document.registration.email.value;
-        var phone = document.registration.phone.value;
-        
-        $.ajax({
-            url: 'reg.php',
-            type: 'POST',
-            dataType: 'json',
-            data: {
-                login: login,
-                password: password,
-                email: email,
-                phone: phone
-            },
-            success(data) {
-               if(data.status) {
+    if(form_validation()){
+        e.preventDefault();
+        if($('.registration').hasClass('open')){
+            var login = document.registration.login.value;
+            var password = document.registration.password.value;
+            var email = document.registration.email.value;
+            var phone = document.registration.phone.value;
+            
+            $.ajax({
+                url: 'reg.php',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    login: login,
+                    password: password,
+                    email: email,
+                    phone: phone
+                },
+                success(data) {
+                    if(data.status) {
+                        document.location.reload();
+                    }
+                    else{
+                        $('.msg-reg').text("");
+                        data.errors.forEach(error => {
+                            $('.msg-reg').addClass(' open').append(error);
+                            $('.msg-reg').append("<br>");
+                        });
+                    }
                 }
-                else{
-                    $('.msg-reg').addClass(' open').text(data.errors[0]);
+            })
+        }
+        if($('.enter').hasClass('open')){
+            var login = document.enter.login.value;
+            var password = document.enter.password.value;
+            $.ajax({
+                url: 'enter.php',
+                type: 'POST',
+                dataType: 'json',
+                data: {
+                    login: login,
+                    password: password
+                },
+                success(data) {
+                    if(data.status){
+                        document.location.reload();
+                    }
+                    else{
+                        $('.msg-enter').text("");
+                        data.errors.forEach(error => {
+                            $('.msg-enter').addClass(' open').append(error);
+                            $('.msg-enter').append("<br>");
+                        });
+                    }
                 }
-            }
-        })
-    }
-    if($('.enter').hasClass('open')){
-        var login = document.enter.login.value;
-        var password = document.enter.password.value;
-        $.ajax({
-            url: 'enter.php',
-            type: 'POST',
-            dataType: 'json',
-            data: {
-                login: login,
-                password: password
-            },
-            success(data) {
-                if(data.status){
-                }
-                else{
-                    $('.msg-enter').addClass(' open').text(data.errors[0]);
-                }
-             }
-        })
+            })
+        }
     }
     return false;
 });

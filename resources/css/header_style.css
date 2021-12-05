@@ -32,14 +32,8 @@
     min-width: 0;
 }
 
-.header_nav_menu{
-    display: flex;
-    justify-content: space-around;
+.exit{
     padding: 0 10px;
-}
-
-.header_nav_menu > div{
-    margin: 0 10px;
 }
 
 .header_nav_auth{

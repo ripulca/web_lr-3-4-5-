@@ -22,27 +22,28 @@ if (empty($errors)) {
 
         if ($save_result) {
             session_start();
-            $_SESSION['user_id'] = $user_obj->getUserIdByLogin($data['login']);
+            $_SESSION["user_id"] = $user_obj->getUserIdByLogin($data['login']);
             if (!isset($_SESSION['count'])) {
                 $_SESSION['count'] = 0;
-             } else {
+            } else {
                 $_SESSION['count']++;
-             }
-             
+            }
+            $response =[
+                "status" =>true,
+                "user_login"=>$user['client_login']
+            ];
+            echo json_encode($response);
+            return;
         } else {
             array_push($errors, "Не удалось создать пользователя");
         }
     } else {
         array_push($errors, "Пользователь с таким email уже существует");
     }
-    $response =[
-        "status" =>true
-    ];
 }
-else {
-    $response =[
-        "status" =>false,
-        "errors" =>$errors
-    ];
-}
+$response =[
+    "status" =>false,
+    "errors" =>$errors
+];
+
 echo json_encode($response);

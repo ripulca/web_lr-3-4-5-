@@ -54,7 +54,10 @@ class User extends DB
                                     WHERE client_email=:email; ");
         $proc->execute(array(":email" => $email));
         $count = (int) $proc->fetch()[0];
-        return $count === 0;
+        if($count===0){
+            return true;
+        }
+        return false;
     }
 
     public function save($name, $email, $phone, $password)

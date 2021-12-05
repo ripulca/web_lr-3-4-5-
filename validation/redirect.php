@@ -13,16 +13,17 @@ function redirectIfUserLogged($user_var='user_id', $redirect_to='/')
 function getUserIfUserLogged()
 {
     session_start();
+    
+    if(!empty($_SESSION)){
+        if ($_SESSION['user_id']) {
+            $user_id = (int) $_SESSION['user_id'];
 
-    if ($_SESSION['user_id']) {
-        $user_id = (int) $_SESSION['user_id'];
+            require_once "models/User.php";
 
-        require_once "models/models.php";
-
-        $user_obj = new User();
-        return $user_obj->getUserById($user_id);
+            $user_obj = new User();
+            return $user_obj->getUserById($user_id);
+        }
     }
-
     return false;
 }
 

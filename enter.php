@@ -19,18 +19,24 @@ if (empty($errors)) {
 
     if ($user) {
         session_start();
-        $_SESSION['user_id'] = $user['client_id'];
+        $_SESSION["user_id"]=$user['client_id'];
+        if (!isset($_SESSION['count'])) {
+            $_SESSION['count'] = 0;
+        } else {
+            $_SESSION['count']++;
+        }
+        $response =[
+            "status" =>true,
+            "user_login"=>$user['client_login']
+        ];
+        echo json_encode($response);
+        return;
     } else {
         array_push($errors, "Неверный логин или пароль");
     }
-    $response =[
-        "status" =>true
-    ];
 }
-else {
-    $response =[
-        "status" =>false,
-        "errors" =>$errors
-    ];
-}
+$response =[
+    "status" =>false,
+    "errors" =>$errors
+];
 echo json_encode($response);
