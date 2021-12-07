@@ -3,6 +3,10 @@ $('.header_nav_auth_btn').click(function () {
         $('.dark_background').addClass(' open');
         $('.enter').addClass(' open');
     }
+    
+    if($('.modal_change_btns').hasClass('close')){ 
+        $('.modal_change_btns').removeClass(' close');
+    }
 })
 
 // $('.add_content_btn').click(function(){
@@ -25,16 +29,22 @@ $('.dark_background').mouseup(function (e) {
     if (!modal_win.is(e.target) && modal_win.has(e.target).length === 0) {
         $('.dark_background').removeClass(' open');
         if($('.msg-reg').hasClass('open')){
-            $('.msg-reg').removeClass('open');
+            $('.msg-reg').removeClass(' open');
         }
         if($('.msg-enter').hasClass('open')){
-            $('.msg-enter').removeClass('open');
+            $('.msg-enter').removeClass(' open');
         }
         if($('.enter').hasClass('open')){ 
             $('.enter').removeClass(' open');
         }
         if($('.registration').hasClass('open')){ 
             $('.registration').removeClass(' open');
+        }
+        if($('.msg-photo').hasClass('open')){
+            $('.msg-photo').removeClass(' open');
+        }
+        if($('.add_photo').hasClass('open')){
+            $('.add_photo').removeClass(' open');
         }
     }
 });

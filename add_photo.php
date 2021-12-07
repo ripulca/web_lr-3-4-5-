@@ -1,6 +1,6 @@
 <?php
 
-    echo $_FILES;
+    var_dump($_FILES);
 
     // $errors=[];
 

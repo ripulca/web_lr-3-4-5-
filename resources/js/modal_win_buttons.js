@@ -36,6 +36,9 @@ $('.close').click(function () {
     if($('.msg-enter').hasClass('open')){
         $('.msg-enter').removeClass('open');
     }
+    if($('.msg-photo').hasClass('open')){
+        $('.msg-photo').removeClass('open');
+    }
   });
 
   function pwd_validation(pwd, form){
@@ -155,30 +158,41 @@ $('.submit_reg').click(function(e){
 });
 
 $('.add_photo_btn').click(function(e) {
+    if(!$('.dark_background').hasClass('open')){ 
+        $('.dark_background').addClass(' open');
+    }
+    
+    if(!$('.modal_change_btns').hasClass('close')){ 
+        $('.modal_change_btns').addClass(' close');
+    }
+    
     if(!$('.add_photo').hasClass('open')){
         $('.add_photo').addClass(' open');
     }
-    if($('.registration').hasClass('open')){ 
-        $('.registration').removeClass(' open');
-    }        
-    if($('.enter').hasClass('open')){ 
-        $('.enter').removeClass(' open');
-    }
-    if($('.msg-enter').hasClass('open')){
-        $('.msg-enter').removeClass('open');
-    }
-    if($('.msg-reg').hasClass('open')){
-        $('.msg-reg').removeClass('open');
-    }
+    // if($('.registration').hasClass('open')){ 
+    //     $('.registration').removeClass(' open');
+    // }        
+    // if($('.enter').hasClass('open')){ 
+    //     $('.enter').removeClass(' open');
+    // }
+    // if($('.msg-enter').hasClass('open')){
+    //     $('.msg-enter').removeClass('open');
+    // }
+    // if($('.msg-reg').hasClass('open')){
+    //     $('.msg-reg').removeClass('open');
+    // }
 });
 
 $('.submit_photo').click(function(e){
     e.stopPropagation();
     e.preventDefault();
 
-    $('input[type=file]').on('change', function(){
-        var formData = new FormData(this);
-    });
+    var formData = new FormData(document.getElementById('add_photo'));
+
+    // if(Object.keys(formData).length == 0) {
+    //     $('.msg-photo').addClass(' open').text('Form is empty (._.)');
+    //     return false;
+    // }
 
     // var name = document.add_photo.photo_name.value;
     // var comment = document.add_photo.photo_comment.value;

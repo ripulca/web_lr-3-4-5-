@@ -52,6 +52,10 @@
     align-items: center;
 }
 
+.close{
+    visibility: hidden;
+}
+
 .modal_win_btn{
     border-radius: 30px;
     padding: 10px 20px;
