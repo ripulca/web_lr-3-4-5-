@@ -18,6 +18,7 @@
         <?php
         require 'modal_enter.php';
         require 'modal_reg.php';
+        require 'modal_add.php';
         ?>
     </div>
 </div>

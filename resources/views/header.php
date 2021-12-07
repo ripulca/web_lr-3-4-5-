@@ -15,6 +15,7 @@
         </form>
         <?php if ($user): ?>
             <div class="hello">Привет, <?= $user['client_login'] ?></div>
+            <button class="btn add_photo_btn">Add Photo</button>
             <a class="exit" href=<?= "/exit.php"?>>Exit</a>
         <?php else: ?>
             <button class="header_nav_auth_btn neomorf_flat">Sign in/Sign up</button>

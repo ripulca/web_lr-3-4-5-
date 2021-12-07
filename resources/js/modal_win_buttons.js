@@ -89,64 +89,125 @@ function form_validation(){
     return false;
 }
 
-$('.submit').click(function(e){
+$('.submit_enter').click(function(e){
     if(form_validation()){
         e.preventDefault();
-        if($('.registration').hasClass('open')){
-            var login = document.registration.login.value;
-            var password = document.registration.password.value;
-            var email = document.registration.email.value;
-            var phone = document.registration.phone.value;
-            
-            $.ajax({
-                url: 'reg.php',
-                type: 'POST',
-                dataType: 'json',
-                data: {
-                    login: login,
-                    password: password,
-                    email: email,
-                    phone: phone
-                },
-                success(data) {
-                    if(data.status) {
-                        document.location.reload();
-                    }
-                    else{
-                        $('.msg-reg').text("");
-                        data.errors.forEach(error => {
-                            $('.msg-reg').addClass(' open').append(error);
-                            $('.msg-reg').append("<br>");
-                        });
-                    }
+        var login = document.enter.login.value;
+        var password = document.enter.password.value;
+        $.ajax({
+            url: 'enter.php',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                login: login,
+                password: password
+            },
+            success(data) {
+                if(data.status){
+                    document.location.reload();
                 }
-            })
-        }
-        if($('.enter').hasClass('open')){
-            var login = document.enter.login.value;
-            var password = document.enter.password.value;
-            $.ajax({
-                url: 'enter.php',
-                type: 'POST',
-                dataType: 'json',
-                data: {
-                    login: login,
-                    password: password
-                },
-                success(data) {
-                    if(data.status){
-                        document.location.reload();
-                    }
-                    else{
-                        $('.msg-enter').text("");
-                        data.errors.forEach(error => {
-                            $('.msg-enter').addClass(' open').append(error);
-                            $('.msg-enter').append("<br>");
-                        });
-                    }
+                else{
+                    $('.msg-enter').text("");
+                    data.errors.forEach(error => {
+                        $('.msg-enter').addClass(' open').append(error);
+                        $('.msg-enter').append("<br>");
+                    });
                 }
-            })
-        }
+            }
+        })
     }
     return false;
+});
+
+
+$('.submit_reg').click(function(e){
+    if(form_validation()){
+        e.preventDefault();
+        var login = document.registration.login.value;
+        var password = document.registration.password.value;
+        var email = document.registration.email.value;
+        var phone = document.registration.phone.value;
+        
+        $.ajax({
+            url: 'reg.php',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                login: login,
+                password: password,
+                email: email,
+                phone: phone
+            },
+            success(data) {
+                if(data.status) {
+                    document.location.reload();
+                }
+                else{
+                    $('.msg-reg').text("");
+                    data.errors.forEach(error => {
+                        $('.msg-reg').addClass(' open').append(error);
+                        $('.msg-reg').append("<br>");
+                    });
+                }
+            }
+        })
+    }
+});
+
+$('.add_photo_btn').click(function(e) {
+    if(!$('.add_photo').hasClass('open')){
+        $('.add_photo').addClass(' open');
+    }
+    if($('.registration').hasClass('open')){ 
+        $('.registration').removeClass(' open');
+    }        
+    if($('.enter').hasClass('open')){ 
+        $('.enter').removeClass(' open');
+    }
+    if($('.msg-enter').hasClass('open')){
+        $('.msg-enter').removeClass('open');
+    }
+    if($('.msg-reg').hasClass('open')){
+        $('.msg-reg').removeClass('open');
+    }
+});
+
+$('.submit_photo').click(function(e){
+    e.stopPropagation();
+    e.preventDefault();
+
+    $('input[type=file]').on('change', function(){
+        var formData = new FormData(this);
+    });
+
+    // var name = document.add_photo.photo_name.value;
+    // var comment = document.add_photo.photo_comment.value;
+    
+	
+    // $.each( files, function( key, value ){
+	// 	data.append( key, value );
+	// });
+
+    
+
+    $.ajax({
+        url: 'add_photo.php',
+        type: 'POST',
+        dataType: 'json',
+        processData: false,
+        cache: false,
+        data: formData,
+        success(data) {
+            if(data.status) {
+                document.location.reload();
+            }
+            else{
+                $('.msg-photo').text("");
+                data.errors.forEach(error => {
+                    $('.msg-photo').addClass(' open').append(error);
+                    $('.msg-photo').append("<br>");
+                });
+            }
+        }
+    })
 });

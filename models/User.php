@@ -64,7 +64,7 @@ class User extends DB
     {
         try {
             $proc = $this->pdo->prepare("INSERT INTO client (client_login, client_pwd, client_email, client_phone) 
-            VALUES (:client_login, :password_hash, :email, :phone); ");
+                                            VALUES (:client_login, :password_hash, :email, :phone); ");
 
             $save_name = htmlspecialchars($name);
             $save_email = htmlspecialchars($email);
