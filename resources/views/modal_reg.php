@@ -7,3 +7,4 @@
     <div style="color: white"><input name="permission" type="checkbox" style="margin:5px" required="required"><label for="permission">Согласие на продажу почки</label></div>
     <button class="submit submit_reg modal_win_submit_btn">Submit</button>
     <p class="msg msg-reg"></p>
+</form>
