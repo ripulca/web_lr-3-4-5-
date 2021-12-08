@@ -183,34 +183,34 @@ $('.add_photo_btn').click(function(e) {
     // }
 });
 
+var files;
+
+$('input[type=file]').on('change', function(){
+	files = this.files;
+});
+
 $('.submit_photo').click(function(e){
     e.stopPropagation();
     e.preventDefault();
 
-    var formData = new FormData(document.getElementById('add_photo'));
+    if( typeof files == 'undefined' ) return;
 
-    // if(Object.keys(formData).length == 0) {
-    //     $('.msg-photo').addClass(' open').text('Form is empty (._.)');
-    //     return false;
-    // }
+	// создадим объект данных формы
+	var data = new FormData(document.getElementById('add_photo'));
 
-    // var name = document.add_photo.photo_name.value;
-    // var comment = document.add_photo.photo_comment.value;
-    
+// заполняем объект данных файлами в подходящем для отправки формате
+	$.each( files, function( key, value ){
+		data.append( key, value );
+	});
 	
-    // $.each( files, function( key, value ){
-	// 	data.append( key, value );
-	// });
-
-    
-
     $.ajax({
         url: 'add_photo.php',
         type: 'POST',
         dataType: 'json',
         processData: false,
         cache: false,
-        data: formData,
+        contentType: false,
+        data: data,
         success(data) {
             if(data.status) {
                 document.location.reload();
