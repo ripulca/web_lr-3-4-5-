@@ -32,6 +32,10 @@
         $post=new Post();
         if($post->add($comment)){
             if (move_uploaded_file($_FILES['photo']['tmp_name'], $uploadfile)) {
+                $old_filename=$uploadfile;
+                $uploadfile=imagecreatefromjpeg($uploadfile);
+                unlink( $old_filename );
+                move_uploaded_file($_FILES['photo']['tmp_name'], $uploadfile);
                 $photo=new Photo();
                 if($photo->add($name, $bddir, $format)){
                     $response =[

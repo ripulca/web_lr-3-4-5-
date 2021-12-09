@@ -50,7 +50,7 @@ class PostValidation
     }
 
     public function checkFormat(){
-        if(($_FILES['photo']['type']!='image/jpeg')||(($this->format!='jpg')&&($this->format!='jpeg'))){
+        if((($_FILES['photo']['type']!='image/jpeg')&&($_FILES['photo']['type']!='image/png'))||(($this->format!='jpg')&&($this->format!='jpeg'))){
             array_push($this->errors, "Неправильный тип файла\n");
             return false;
         }
