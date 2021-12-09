@@ -29,9 +29,9 @@
         $uploadfile = $uploaddir . basename($_FILES['photo']['name']);
         $bddir=$bddir.basename($_FILES['photo']['name']);
 
-        if (move_uploaded_file($_FILES['photo']['tmp_name'], $uploadfile)) {
-            $post=new Post();
-            if($post->add($comment)){
+        $post=new Post();
+        if($post->add($comment)){
+            if (move_uploaded_file($_FILES['photo']['tmp_name'], $uploadfile)) {
                 $photo=new Photo();
                 if($photo->add($name, $bddir, $format)){
                     $response =[
@@ -41,10 +41,10 @@
                     array_push($errors, "Ошибка добавления фото\n");
                 }
             } else {
-                array_push($errors, "Ошибка создания поста\n");
+                array_push($errors, "Ошибка сохранения на сервер\n");
             }
         } else {
-            array_push($errors, "Ошибка сохранения на сервер\n");
+            array_push($errors, "Ошибка создания поста\n");
         }
         if (!empty($errors)) {
             $response =[
