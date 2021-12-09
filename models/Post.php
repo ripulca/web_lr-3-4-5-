@@ -25,7 +25,7 @@ class Post extends DB
             if ($_SESSION['user_id']) {
                 $user_id = (int) $_SESSION['user_id'];
             }
-            $date=date("Y-m-d");
+            $date=date("Y/m/d");
             try {
                 $proc = $this->pdo->prepare("INSERT INTO post (client_id, post_date, post_author_comment) 
                                                 VALUES (:client_id, :post_date, :comment); ");
