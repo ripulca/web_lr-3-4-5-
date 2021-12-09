@@ -2,7 +2,8 @@
 
 require_once "PDO.php";
 
-class Post{
+class Post extends DB
+{
 
     function getPostById($id){
         $proc = $this->pdo->prepare("
@@ -24,21 +25,21 @@ class Post{
             if ($_SESSION['user_id']) {
                 $user_id = (int) $_SESSION['user_id'];
             }
-        }
-        $date=date("Y-m-d");
-        try {
-            $proc = $this->pdo->prepare("INSERT INTO post (client_id, post_date, post_author_comment) 
-                                            VALUES (:client_id, :post_date, :comment); ");
+            $date=date("Y-m-d");
+            try {
+                $proc = $this->pdo->prepare("INSERT INTO post (client_id, post_date, post_author_comment) 
+                                                VALUES (:client_id, :post_date, :comment); ");
 
-            $save_comment = htmlspecialchars($comment);
+                $save_comment = htmlspecialchars($comment);
 
-            $proc->bindValue(":client_id" , $user_id);
-            $proc->bindValue(":post_date" , $date);
-            $proc->bindValue(":comment" , $save_comment);
+                $proc->bindValue(":client_id" , $user_id);
+                $proc->bindValue(":post_date" , $date);
+                $proc->bindValue(":comment" , $save_comment);
 
-        } catch (PDOException $e) {
-            echo "Ошибка сохранения: " . $e->getMessage();
-            return false;
+            } catch (PDOException $e) {
+                echo "Ошибка сохранения: " . $e->getMessage();
+                return false;
+            }
         }
         return true;
     }
